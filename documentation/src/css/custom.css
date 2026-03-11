@@ -1,0 +1,174 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #3581B8;
+  --ifm-color-primary-dark: #2B6A94;
+  --ifm-color-primary-darker: #215270;
+  --ifm-color-primary-darkest: #183B4C;
+  --ifm-color-primary-light: #4998D1;
+  --ifm-color-primary-lighter: #5DAFEA;
+  --ifm-color-primary-lightest: #71C6FF;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme="dark"] {
+  --ifm-color-primary: #4998D1;
+  --ifm-color-primary-dark: #3581B8;
+  --ifm-color-primary-darker: #2B6A94;
+  --ifm-color-primary-darkest: #215270;
+  --ifm-color-primary-light: #5DAFEA;
+  --ifm-color-primary-lighter: #71C6FF;
+  --ifm-color-primary-lightest: #85DDFF;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom styling for all images */
+img {
+  border: 1.5px solid #DFE1E6;
+}
+
+/* Ensure table headers are left-aligned */
+table th {
+  text-align: left;
+}
+
+/* Custom styling for DocCard components used in generated-index pages */
+/* Target the card container */
+article.card {
+  border: 1px solid var(--ifm-color-emphasis-200) !important;
+  border-radius: 12px !important;
+  padding: 1.25rem 1.5rem !important;
+  background: var(--ifm-background-surface-color) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+article.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+}
+
+article.card:hover * {
+  text-decoration: none !important;
+}
+
+/* Target DocCard items in generated index */
+div[class*="cardContainer"] {
+  border: 1px solid var(--ifm-color-emphasis-200) !important;
+  border-radius: 12px !important;
+  padding: 1.25rem 1.5rem !important;
+  background: var(--ifm-background-surface-color) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+div[class*="cardContainer"]:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+}
+
+div[class*="cardContainer"]:hover * {
+  text-decoration: none !important;
+}
+
+/* Target any element with card in the class name */
+*[class*="card"] a {
+  text-decoration: none !important;
+}
+
+*[class*="card"]:hover a {
+  text-decoration: none !important;
+}
+
+*[class*="card"] * {
+  text-decoration: none !important;
+}
+
+*[class*="card"]:hover * {
+  text-decoration: none !important;
+}
+
+/* Specifically target the generated index cards container */
+.theme-doc-card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.theme-doc-card-list article {
+  border: 1px solid var(--ifm-color-emphasis-200) !important;
+  border-radius: 12px !important;
+  padding: 1.25rem 1.5rem !important;
+  background: var(--ifm-background-surface-color) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+.theme-doc-card-list article:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: var(--ifm-color-primary) !important;
+  text-decoration: none !important;
+}
+
+.theme-doc-card-list article:hover * {
+  text-decoration: none !important;
+}
+
+/* Close gap - extend menu link to right edge using negative margin */
+.menu__link {
+  border-radius: 0 !important;
+  margin-right: calc(-1 * var(--ifm-spacing-horizontal)) !important;
+  padding-right: calc(var(--ifm-menu-link-padding-horizontal) + var(--ifm-spacing-horizontal)) !important;
+}
+
+.menu__link--active {
+  border-radius: 0 !important;
+  margin-right: calc(-1 * var(--ifm-spacing-horizontal)) !important;
+  padding-right: calc(var(--ifm-menu-link-padding-horizontal) + var(--ifm-spacing-horizontal)) !important;
+}
+
+/* Also apply to collapsible menu items and their caret */
+.menu__list-item-collapsible {
+  margin-right: calc(-1 * var(--ifm-spacing-horizontal)) !important;
+}
+
+.menu__list-item-collapsible > .menu__link {
+  padding-right: calc(var(--ifm-menu-link-padding-horizontal) + var(--ifm-spacing-horizontal)) !important;
+}
+
+/* Fix the caret button to align properly */
+.menu__caret {
+  margin-right: calc(var(--ifm-spacing-horizontal)) !important;
+}
+
+/* Ensure nested menu items also extend to the edge */
+.menu__list .menu__list-item {
+  margin-right: 0 !important;
+}
+
+/* Widen the sidebar */
+:root {
+  --doc-sidebar-width: 320px !important;
+}
+
+@media (min-width: 997px) {
+  [class*="docSidebarContainer"] {
+    width: var(--doc-sidebar-width) !important;
+  }
+}

@@ -1,0 +1,269 @@
+include:
+  - https://raw.githubusercontent.com/oss-review-toolkit/ort-ci-gitlab/main/templates/ort-scan.yml
+
+default:
+  tags:
+    - lnds
+
+stages:
+  - test
+  - push
+  - deploy
+  - changelog
+  - release
+
+variables:
+  FULL_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+ort-scan:
+  stage: test
+  extends: .ort-scan
+  variables:
+    ORT_CONFIG_REPOSITORY: "https://${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD}@gitlab.com/lnds-lu/sandbox/merge-conflict-zone/ort-config.git"
+    ORT_CONFIG_REVISION: "main"
+    ORT_REPORT_FORMATS: "WebApp,GitLabLicenseModel"
+    FAIL_ON: "violations"
+    ORT_CLI_ANALYZE_ARGS: >
+      -l project=oss-project
+      -l enable-prior-to-oss-rules
+    ORT_CLI_EVALUATE_ARGS: >
+      -l project=oss-project
+    ORT_CLI_ARGS: "-P ort.forceOverwrite=true -P ort.analyzer.enabledPackageManagers=PIP,Unmanaged --stacktrace"
+  artifacts:
+    when: always
+    paths:
+      - $ORT_RESULTS_PATH
+  only:
+    - main
+
+test-backend-job:
+  stage: test
+  image: python:3.14
+  script:
+    - cd app/
+    - pip install -r requirements.txt
+    - black --check ./
+    - pytest --cov=. --cov-report xml:coverage.xml
+  artifacts:
+    paths:
+      - app/coverage.xml
+
+test-frontend-job:
+  stage: test
+  image: node:22.22.0
+  script:
+    - cd app/client
+    - npm install
+    - npm run validate
+    - npm run build
+    - npm run test
+
+test-e2e-job:
+  stage: test
+  services:
+    - docker:29.2.1-dind
+  image: docker:29.2.1
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+    POSTGRESQL_DATABASE: dca
+    POSTGRESQL_USER: dca
+    POSTGRESQL_PASSWORD: dca
+    DATABASE_URL: postgres://dca:dca@database:5432/dca
+    FRONTEND_DOMAIN: http://localhost:8000
+    ENVIRONMENT: production
+    CATALOGUE_URL: http://localhost:8000
+    SESSION_SECRET_KEY: dummy_session_secret_key
+  script:
+    - docker-compose -f docker-compose.e2e.yaml build
+    - docker-compose -f docker-compose.e2e.yaml up -d
+    - |
+      echo "Waiting for Keycloak to be ready..."
+      while ! docker compose -f docker-compose.e2e.yaml logs keycloak | grep "Running the server in development mode. DO NOT use this configuration in production"; do
+        echo "Keycloak not ready yet, waiting..."
+        sleep 5
+      done
+      echo "Keycloak is ready."
+    - docker compose -f docker-compose.e2e.yaml exec -e LOAD_INITIAL_DATA=True app alembic upgrade head
+    - docker compose -f docker-compose.e2e.yaml exec app python seed_roles_for_cdsp.py
+    - docker compose -f docker-compose.e2e.yaml exec e2e-tests npm run format
+    - docker compose -f docker-compose.e2e.yaml exec e2e-tests npm run type-check
+    - docker compose -f docker-compose.e2e.yaml exec e2e-tests npm run lint
+    - sleep 20
+    - docker compose -f docker-compose.e2e.yaml exec e2e-tests npx playwright test
+
+sonarqube-check:
+  stage: test
+  needs:
+    - job: test-backend-job
+      artifacts: true
+  image:
+    name: sonarsource/sonar-scanner-cli:12.0
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner -X
+  allow_failure: true
+
+reuse:
+  stage: test
+  image:
+    name: fsfe/reuse:latest
+    entrypoint: [""]
+  script:
+    - reuse lint
+
+deploy_dev:
+  stage: deploy
+  trigger:
+    project: lnds-lu/ops/deployments/apps/dca-metadata-capture
+    strategy: depend
+  variables:
+    DEPLOY_APP: "app"
+  only:
+    - main
+
+deploy_aev:
+  stage: deploy
+  trigger:
+    project: lnds-lu/ops/deployments/apps/dca-metadata-capture
+    branch: aev
+    strategy: depend
+  variables:
+    DEPLOY_APP: "app"
+  only:
+    - main
+
+deploy_cdsp:
+  stage: deploy
+  trigger:
+    project: lnds-lu/ops/deployments/apps/dca-metadata-capture
+    branch: cdsp
+    strategy: depend
+  variables:
+    DEPLOY_APP: "app"
+  only:
+    - main
+
+publish_main_docker_image:
+  stage: push
+  services:
+    - docker:29-dind
+  image: docker:29
+  before_script:
+    - echo $HARBOR_PASSWORD_RO | docker login -u $HARBOR_USERNAME_RO --password-stdin $HARBOR_HOST
+  script:
+    # Build image
+    - docker build -t $HARBOR_HOST/library/dca-metadata-capture:main .
+    - echo $HARBOR_LIBRARY_PASSWORD_PUSH | docker login -u $HARBOR_LIBRARY_USERNAME_PUSH --password-stdin $HARBOR_HOST
+    - docker push $HARBOR_HOST/library/dca-metadata-capture:main
+  only:
+    - main
+
+publish_tag_docker_image:
+  stage: push
+  services:
+    - docker:29-dind
+  image: docker:29
+  before_script:
+    - echo $HARBOR_PASSWORD_RO | docker login -u $HARBOR_USERNAME_RO --password-stdin $HARBOR_HOST
+  script:
+    - set -e
+    - set -x
+    - echo "Fetching version from CI_COMMIT_TAG"
+    - version="$CI_COMMIT_TAG"
+    - echo "Removing 'v' prefix if present"
+    - version_number=${version#v}
+    - echo "Splitting version number into parts"
+    - major=$(echo "$version_number" | cut -d. -f1)
+    - minor=$(echo "$version_number" | cut -d. -f2)
+    - patch=$(echo "$version_number" | cut -d. -f3)
+    - echo "Building version array"
+    - version_array="$major $major.$minor $version_number latest"
+    - echo "Building Docker image with tag $version_number"
+    - docker build -t $HARBOR_HOST/library/dca-metadata-capture:$version_number .
+    - echo "Tagging Docker image"
+    - for tag in $version_array; do
+    - echo "Tagging Docker image with tag $tag"
+    - docker tag $HARBOR_HOST/library/dca-metadata-capture:$version_number $HARBOR_HOST/library/dca-metadata-capture:$tag
+    - done
+    - echo "Pushing Docker image to the registry"
+    - for tag in $version_array; do
+    - echo "Pushing Docker image with tag $tag"
+    - echo $HARBOR_LIBRARY_PASSWORD_PUSH | docker login -u $HARBOR_LIBRARY_USERNAME_PUSH --password-stdin $HARBOR_HOST
+    - docker push $HARBOR_HOST/library/dca-metadata-capture:$tag
+    - done
+  only:
+    - tags
+
+pages:
+  image: node:22.22.0
+  stage: deploy
+  script:
+    - cd documentation
+    - npm install
+    - DOCS_BASE_URL=/ npm run build
+    - mv ./build ./../public
+  artifacts:
+    paths:
+      - public
+  when: manual
+
+generate_changelog:
+  stage: changelog
+  only:
+    - tags
+  script:
+    - git fetch --all --tags
+    - git checkout -b changelog-update-${CI_COMMIT_TAG}
+    - git config user.name "CI Bot"
+    - git config user.email "bot@example.com"
+    - chmod +x documentation/changelog.sh
+    - ./documentation/changelog.sh
+    - git push https://gitlab-ci-token:${CI_PUSH_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.git changelog-update-${CI_COMMIT_TAG}
+    - >
+      curl --request POST
+      --header "PRIVATE-TOKEN: $CI_PUSH_TOKEN"
+      "$CI_API_V4_URL/projects/$CI_PROJECT_ID/merge_requests"
+      --form "source_branch=changelog-update-${CI_COMMIT_TAG}"
+      --form "target_branch=main"
+      --form "title= docs: Update CHANGELOG for $CI_COMMIT_TAG"
+
+publish_release:
+  stage: release
+  rules:
+    - if: "$CI_COMMIT_TAG"
+      when: always
+    - when: never
+
+  script:
+    - echo "Publishing GitLab Release for tag $CI_COMMIT_TAG"
+    - |
+      RELEASE_NOTES=$(awk '
+        BEGIN { p=0 }
+        /^## \[/ {
+          if (p) exit
+          if ($0 ~ "\\[$CI_COMMIT_TAG\\]") p=1
+          next
+        }
+        p { print }
+      ' documentation/docs-developer/CHANGELOG.md)
+    - |
+      PREVIOUS_TAG=$(git tag --sort=-creatordate | grep -v "$CI_COMMIT_TAG" | head -n 1 || echo "main")
+      COMPARE_LINK="[$PREVIOUS_TAG...$CI_COMMIT_TAG]($CI_PROJECT_URL/-/compare/$PREVIOUS_TAG...$CI_COMMIT_TAG)"
+      RELEASE_BODY="### What's Changed"$'\n'"$RELEASE_NOTES"$'\n\n'"**Full Changelog**: $COMPARE_LINK"
+
+    - >
+      curl --request POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN"
+      "$CI_API_V4_URL/projects/$CI_PROJECT_ID/releases"
+      --form "name=$CI_COMMIT_TAG"
+      --form "tag_name=$CI_COMMIT_TAG"
+      --form "ref=$CI_COMMIT_TAG"
+      --form "description=$RELEASE_BODY"

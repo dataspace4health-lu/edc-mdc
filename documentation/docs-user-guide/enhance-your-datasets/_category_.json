@@ -1,0 +1,9 @@
+{
+  "label": "Enhance datasets",
+  "position": 6,
+  "description": "Add structure and context to make datasets more valuable.",
+  "link": {
+    "type": "generated-index",
+    "description": "Make your datasets more discoverable with rich metadata and relationships."
+  }
+}

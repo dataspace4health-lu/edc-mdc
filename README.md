@@ -1,20 +1,31 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
+![build](https://gitlab.com/lnds-lu/service-library/dca-metadata-capture/badges/main/pipeline.svg)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# DCA Metadata Capture
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+An application designed to support DCAT-compliant dataset management. This platform features comprehensive authentication mechanisms and an activity log feature to enhance data transparency and security. The backend of this application is powered by Python while the frontend is built with React
+Quickstart:
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Documentation
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+The documentation for this project is hosted on GitLab Pages. You can access it by clicking the link below:
+
+[https://docs.metadata.lnds.lu](https://docs.metadata.lnds.lu)
+
+## Contributing to the project
+
+We welcome contributions! If you would like to contribute, please follow these steps:
+
+Fork the repository
+Create a new branch for your changes
+Make your changes
+Run the tests to ensure they pass
+Submit a pull request
+
+### Contributing to the documentation
+
+To contribute to the documentation, see the documentation readme: [documentation/README.md](./documentation/README.md)
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.

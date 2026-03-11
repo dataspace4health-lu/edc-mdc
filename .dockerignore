@@ -1,0 +1,14 @@
+_http
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+.git
+.gitignore
+.vscode
+.github
+.idea
+.pytest_cache
+venv

@@ -1,0 +1,52 @@
+# A Sample Docker Compose file for the Metadata Capture application
+version: '3.8'
+
+services:
+  metadata-capture:
+    image: registry.gitlab.com/lnds-lu/service-library/dca-metadata-capture:v1.0.0  # Replace with actual tag
+    container_name: metadata-capture
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - CONFIG_PATH=/config/config.json
+      - DATABASE_URL=postgresql://user:password@localhost:5432/db
+      - DB_SSL_MODE=require
+      - DB_SSL_CERT=/app/certs/client-cert.pem
+      - DB_SSL_KEY=/app/certs/client-key.pem
+      - DB_SSL_ROOT_CERT=/app/certs/ca-cert.pem
+      - MIGRATION_DATABASE_URL=postgresql://user:password@localhost:5432/db
+      - MIGRATION_DB_SSL_MODE=require
+      - MIGRATION_DB_SSL_CERT=/app/migration_certs/client-cert.pem
+      - MIGRATION_DB_SSL_KEY=/app/migration_certs/client-key.pem
+      - MIGRATION_DB_SSL_ROOT_CERT=/app/migration_certs/ca-cert.pem
+      - APP_URL=http://localhost:8000
+      - ENVIRONMENT=production
+      - OPENID_CLIENT_ID=dca-metadata-capture-local
+      - OPENID_CLIENT_SECRET=ypctz2GbUYM4qNMg48BRGNfVzgFTINzJ
+      - OPENID_AUTH_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/auth
+      - OPENID_TOKEN_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/token
+      - OPENID_JWKS_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/certs
+      - OPENID_END_SESSION_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/logout
+      - SESSION_SECRET_KEY=secret
+      - SESSION_ENCRYPTION_KEY=encryption_key
+      - OTL_URL
+      - OTL_TOKEN
+      - SENDER_EMAIL
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_SERVER
+      - SMTP_PORT
+      - FRONT_OFFICE_HOST
+      - FRONT_OFFICE_PORT
+      - FRONT_OFFICE_USER
+      - FRONT_OFFICE_PASSWORD
+      - FRONT_OFFICE_UPLOAD_PATH
+      - AVSCAN_API_URL
+      - AVSCAN_API_KEY
+      - LEGILUX_ENDPOINT
+    restart: unless-stopped
+    volumes:
+      - "./path/config.json:/config/config.json"
+      - "./path/certs:/app/certs"
+      - "./path/migration_certs:/app/migration_certs"

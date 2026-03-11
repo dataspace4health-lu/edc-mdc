@@ -1,0 +1,379 @@
+{
+  "type": "object",
+  "properties": {
+    "config_version": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "app_title": {
+      "type": "string"
+    },
+    "default_themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "catalogue": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "publisher_name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "uri_templates": {
+          "type": "object",
+          "properties": {
+            "datasets": {
+              "type": "string",
+              "pattern": ".*\\{identifier\\}.*"
+            },
+            "data_services": {
+              "type": "string",
+              "pattern": ".*\\{id\\}.*"
+            },
+            "sample_distribution_download": {
+              "type": "string",
+              "pattern": ".*\\{identifier\\}.*"
+            }
+          },
+          "required": [
+            "datasets",
+            "data_services",
+            "sample_distribution_download"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "publisher_name",
+        "url",
+        "uri_templates"
+      ]
+    },
+    "health_data_access_body": {
+      "type": "object",
+      "properties": {
+        "identifier": {
+          "type": "string",
+          "format": "uri"
+        },
+        "name": {
+          "type": "string"
+        },
+        "contact_name": {
+          "type": "string"
+        },
+        "contact_email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": ["identifier", "name", "contact_name", "contact_email"]
+    },
+    "unauthorised_message": {
+      "type": "string"
+    },
+    "technical_support_message": {
+      "type": "string"
+    },
+    "feature_flags": {
+      "type": "object",
+      "properties": {
+        "enable_validation_via_group_manager": {
+          "type": "boolean"
+        },
+        "enable_duration_of_data": {
+          "type": "boolean"
+        },
+        "enable_conventions": {
+          "type": "boolean"
+        },
+        "enable_area_of_work_and_competence": {
+          "type": "boolean"
+        },
+        "enable_distribution_path": {
+          "type": "boolean"
+        },
+        "enable_notes": {
+          "type": "boolean"
+        },
+        "enable_distribution_notes": {
+          "type": "boolean"
+        },
+        "enable_monitoring_location": {
+          "type": "boolean"
+        },
+        "enable_authentic_source": {
+          "type": "boolean"
+        },
+        "enable_multi_tenants": {
+          "type": "boolean"
+        },
+        "enable_dual_instance": {
+          "type": "boolean"
+        },
+        "enable_upload_datasets_to_front_office": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enable_duration_of_data",
+        "enable_conventions",
+        "enable_area_of_work_and_competence",
+        "enable_distribution_path",
+        "enable_notes",
+        "enable_distribution_notes",
+        "enable_monitoring_location"
+      ]
+    },
+    "show_notice_on_homepage": {
+      "type": "string"
+    },
+    "conventions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "eng_label": {
+            "type": "string"
+          }
+        },
+        "required": ["key", "eng_label"]
+      }
+    },
+    "areas_of_work": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "eng_label": {
+            "type": "string"
+          }
+        },
+        "required": ["key", "eng_label"]
+      }
+    },
+    "areas_of_competence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "eng_label": {
+            "type": "string"
+          }
+        },
+        "required": ["key", "eng_label"]
+      }
+    },
+    "distribution_path": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "eng_label": {
+            "type": "string"
+          }
+        },
+        "required": ["key", "eng_label"]
+      }
+    },
+    "roles_path_in_access_token": {
+      "type": "string"
+    },
+    "disable_email_for_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "iam_role_name": {
+            "type": "string"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["name", "permissions"]
+      }
+    },
+    "email_templates": {
+      "type": "object",
+      "properties": {
+        "DATASET_COMPLETED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_VALIDATED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_APPROVED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_BACK_TO_DRAFT": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_PUBLISHED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_MARKED_AS_INTERNAL": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_DEPRECATED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "DATASET_DEPRECATED_WITH_NEW_VERSION": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "ROLE_ASSIGNED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "AUTHENTIC_SOURCE_ASSIGNMENT_CHANGED": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        },
+        "KEYWORD_PROMOTED_TO_GLOBAL": {
+          "type": "object",
+          "properties": {
+            "subject": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            }
+          },
+          "required": ["subject", "body"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "config_version",
+    "conventions",
+    "roles_path_in_access_token",
+    "roles",
+    "email_templates"
+  ]
+}

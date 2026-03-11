@@ -1,0 +1,9 @@
+{
+  "label": "Manage organisations",
+  "position": 11,
+  "description": "Ensure ownership and governance by managing organisations and assigning points of contacts for datasets",
+  "link": {
+    "type": "generated-index",
+    "description": "Ensure ownership and governance by managing organisations and assigning points of contacts for datasets."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Welcome, developers",
+  "position": 25,
+  "link": {
+    "type": "generated-index",
+    "description": "Welcome to the Developer Guide for the Metadata Capture Application. This comprehensive guide is structured to help you quickly set up your development environment, run the application, tests, and contribute effectively to the project."
+  }
+}

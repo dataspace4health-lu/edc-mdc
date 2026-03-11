@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Nunito;
+    font-weight: 400;
+    src:
+      url("/fonts/Nunito-Regular.woff") format("woff"),
+      url("/fonts/Nunito-Regular.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: Nunito;
+    font-weight: 600;
+    src: url("/fonts/Nunito-SemiBold.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: Quicksand;
+    font-weight: 400;
+    src:
+      url("/fonts/Quicksand-Regular.woff") format("woff"),
+      url("/fonts/Quicksand-Regular.woff2") format("woff2");
+  }
+}
+
+.translate-x-sidebar {
+  transform: translateX(calc(100% - 3rem));
+}
+
+@media (min-width: 1024px) {
+  .translate-x-sidebar {
+    transform: translateX(calc(100% - 2rem));
+  }
+}
+
+.description-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 5rem;
+}

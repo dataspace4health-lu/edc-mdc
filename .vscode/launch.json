@@ -1,0 +1,34 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "back-end",
+      "type": "debugpy",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/app/",
+      "program": "main.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "envFile": "${workspaceFolder}/app/.env"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "browser",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/app/client/src"
+    },
+    {
+      "name": "Alembic upgrade head",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "alembic",
+      "args": ["upgrade", "head"],
+      "cwd": "${workspaceFolder}/app/",
+      "envFile": "${workspaceFolder}/app/.env"
+    }
+  ]
+}

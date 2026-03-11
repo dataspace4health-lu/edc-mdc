@@ -1,0 +1,163 @@
+services:
+  app:
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://user:password@localhost:5432/db
+      - MIGRATION_DATABASE_URL=postgresql://user:password@localhost:5432/db
+      - APP_URL=http://localhost:8000
+      - ENVIRONMENT=end2end
+      - OPENID_CLIENT_ID=dca-metadata-capture-local
+      - OPENID_CLIENT_SECRET=ypctz2GbUYM4qNMg48BRGNfVzgFTINzJ
+      - OPENID_AUTH_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/auth
+      - OPENID_TOKEN_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/token
+      - OPENID_JWKS_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/certs
+      - OPENID_END_SESSION_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/logout
+      - SESSION_SECRET_KEY=secret
+      - SESSION_ENCRYPTION_KEY=encryption_key
+      - CONFIG_PATH=/config/config.json
+      - FRONT_OFFICE_HOST=localhost
+      - FRONT_OFFICE_PORT=21
+      - FRONT_OFFICE_USER=testuser
+      - FRONT_OFFICE_PASSWORD=TestPass123!
+      - FRONT_OFFICE_UPLOAD_PATH=/ftp/testuser
+      - OTL_URL
+      - OTL_TOKEN
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - "./app/.env.e2e:/code/.env"
+      - "./e2e/config.e2e.json:/config/config.json"
+  database:
+    image: docker.io/postgres:18.2-alpine
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_INITDB_ARGS=--auth-host=md5 --auth-local=trust
+    ports:
+      - "5432:5432"
+    entrypoint: >
+      sh -c "
+      cp /tmp/server.crt /var/lib/postgresql/server.crt &&
+      cp /tmp/server.key /var/lib/postgresql/server.key &&
+      cp /tmp/ca.crt /var/lib/postgresql/ca.crt &&
+      chown postgres:postgres /var/lib/postgresql/server.crt /var/lib/postgresql/server.key /var/lib/postgresql/ca.crt &&
+      chmod 600 /var/lib/postgresql/server.key &&
+      chmod 644 /var/lib/postgresql/server.crt /var/lib/postgresql/ca.crt &&
+      exec /usr/local/bin/docker-entrypoint.sh postgres
+      -c ssl=on
+      -c ssl_cert_file=/var/lib/postgresql/server.crt
+      -c ssl_key_file=/var/lib/postgresql/server.key
+      -c ssl_ca_file=/var/lib/postgresql/ca.crt
+      -c ssl_ciphers='HIGH:MEDIUM:+3DES:!aNULL'
+      -c ssl_prefer_server_ciphers=on
+      "
+    volumes:
+      - db:/var/lib/postgresql/data
+      - "./e2e/certs/server-cert.pem:/tmp/server.crt:ro"
+      - "./e2e/certs/server-key.pem:/tmp/server.key:ro"
+      - "./e2e/certs/ca-cert.pem:/tmp/ca.crt:ro"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+  e2e-tests:
+    network_mode: "host"
+    environment:
+      - CI=true
+    build:
+      context: .
+      dockerfile: e2e/Dockerfile
+    depends_on:
+      - keycloak
+    ports:
+      - 9323:9323
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command:
+      - "start-dev"
+      - "--import-realm"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./e2e/keycloak-config:/opt/keycloak/data/import/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  ftps:
+    image: delfer/alpine-ftp-server
+    container_name: ftps
+    ports:
+      - "21:21"
+      - "21000-21010:21000-21010"
+    volumes:
+      - "ftps_data:/ftp"
+    environment:
+      - USERS=testuser|TestPass123!
+      - ADDRESS=localhost
+      - MIN_PORT=21000
+      - MAX_PORT=21010
+    restart: unless-stopped
+  redis:
+    image: redis:8-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery-worker
+    command: celery -A jobs worker --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - DATABASE_URL=postgresql://user:password@database:5432/db
+      - SOURCE_INSTANCE_URL=http://instance-1:8000
+      - SOURCE_INSTANCE_NAME=instance-1
+      - SYNC_USER_ID=1
+    depends_on:
+      redis:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: celery-beat
+    command: celery -A jobs beat --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  db:
+    driver: local
+  ftps_data:
+    driver: local
+  redis_data:
+    driver: local

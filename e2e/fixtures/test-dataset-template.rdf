@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Luxembourg National Data Service
+SPDX-License-Identifier: Apache-2.0
+-->
+<rdf:RDF
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:dcat="http://www.w3.org/ns/dcat#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <dcat:Dataset rdf:about="https://metadata.demo.lnds.tech/datasets/template-test">
+    <dct:title xml:lang="eng">Test Dataset Template</dct:title>
+    <dct:description xml:lang="eng">Template dataset for testing RDF import.</dct:description>
+    <dct:identifier>template-test</dct:identifier>
+    <dct:type rdf:resource="http://publications.europa.eu/resource/authority/dataset-type/STRUCTURED_DATA"/>
+    
+    <dct:accrualPeriodicity rdf:resource="http://publications.europa.eu/resource/authority/frequency/MONTHLY"/>
+    
+    <dct:accessRights rdf:resource="http://publications.europa.eu/resource/authority/access-right/PUBLIC"/>
+    
+    <dcat:theme rdf:resource="http://publications.europa.eu/resource/authority/data-theme/TECH"/>
+    
+    <dcat:keyword xml:lang="eng">test</dcat:keyword>
+    
+    <dct:publisher>
+      <foaf:Agent>
+        <foaf:name>PNED GIE</foaf:name>
+      </foaf:Agent>
+    </dct:publisher>
+    
+    <dct:temporal>
+      <dct:PeriodOfTime>
+        <dcat:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-01-01</dcat:startDate>
+        <dcat:endDate rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2025-12-31</dcat:endDate>
+      </dct:PeriodOfTime>
+    </dct:temporal>
+  </dcat:Dataset>
+</rdf:RDF>

@@ -1,0 +1,197 @@
+version = 1
+
+# Python source files
+[[annotations]]
+path = ["app/**/*.py", "tests/**/*.py", "scripts/**/*.py", "**/*.py"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# TypeScript and JavaScript files
+[[annotations]]
+path = ["e2e/**/*.ts", "e2e/**/*.js", "documentation/**/*.ts", "documentation/**/*.js", "app/**/*.ts", "app/**/*.tsx", "app/**/*.jsx", "app/**/*.js", "**/*.ts", "**/*.tsx", "**/*.jsx", "**/*.js", "**/*.mjs", "**/*.cjs"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# CSS and styling files
+[[annotations]]
+path = ["**/*.css", "**/*.scss", "**/*.sass", "**/*.less"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# HTML files
+[[annotations]]
+path = ["**/*.html", "**/*.htm"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Configuration files
+[[annotations]]
+path = [
+    "*.json",
+    "*.yaml",
+    "*.yml",
+    "*.toml",
+    "*.ini",
+    "*.cfg",
+    "**/*.json",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/*.toml",
+    ".gitlab-ci.yml",
+    ".pre-commit-config.yaml",
+    ".gitignore",
+    ".dockerignore",
+    "renovate.json",
+    "sonar-project.properties",
+    ".editorconfig",
+    ".prettierrc",
+    ".eslintrc*",
+    "tsconfig*.json"
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Docker files
+[[annotations]]
+path = ["Dockerfile", "Dockerfile.*", "docker-compose*.yaml", "docker-compose*.yml", ".dockerignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Documentation files
+[[annotations]]
+path = ["*.md", "**/*.md", "**/*.mdx"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Shell scripts
+[[annotations]]
+path = ["scripts/**/*.sh", "**/*.sh", "**/*.bash"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# SQL files
+[[annotations]]
+path = ["**/*.sql"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# SVG and image files
+[[annotations]]
+path = ["**/*.svg"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Lock files and package manager files
+[[annotations]]
+path = ["package-lock.json", "package.json", "requirements.txt", "**/*requirements*.txt", "Pipfile", "Pipfile.lock", "poetry.lock", "**/.npmrc", "**/.yarnrc"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# License and legal files
+[[annotations]]
+path = ["LICENSE", "NOTICE.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Other text files
+[[annotations]]
+path = ["**/*.txt", "**/*.log", "**/*.env.example"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# XML files
+[[annotations]]
+path = ["**/*.xml"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# HTTP test files
+[[annotations]]
+path = ["_http/**/*.http"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Environment files
+[[annotations]]
+path = ["**/.env*", "**/*.env", "app/.env.e2e", "app/.env.test", "app/client/.env.development", "app/client/.env.production"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Git ignore files
+[[annotations]]
+path = ["**/.gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Prettier config files
+[[annotations]]
+path = ["**/.prettierrc"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Alembic files
+[[annotations]]
+path = ["app/alembic/**/*", "app/alembic.ini"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Pytest config
+[[annotations]]
+path = ["**/pytest.ini"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# CSV and Excel files
+[[annotations]]
+path = ["**/*.csv", "**/*.xlsm", "**/*.xlsx", "**/*.xls"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Certificate files
+[[annotations]]
+path = ["e2e/certs/**/*"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Font files
+[[annotations]]
+path = ["**/*.woff", "**/*.woff2", "**/*.ttf", "**/*.otf", "**/*.eot"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Image files
+[[annotations]]
+path = ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.gif", "**/*.ico", "**/*.webp"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"
+
+# Dockerfile in subdirectories
+[[annotations]]
+path = ["**/Dockerfile"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Luxembourg National Data Service"
+SPDX-License-Identifier = "Apache-2.0"

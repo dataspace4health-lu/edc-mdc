@@ -1,0 +1,2 @@
+export const HEALTH_RELATED_DATA_EXPLANATION =
+  "This includes population-based health data, medical and mortality registries, healthcare-related administrative data, data on health professionals, electronic health records, aggregated data on healthcare resources, human molecular data (including genetics and genomics), clinical trial data, and health data from medical devices, as defined in Article 51 of the European Health Data Space regulation.";

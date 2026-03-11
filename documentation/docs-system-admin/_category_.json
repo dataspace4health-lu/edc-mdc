@@ -1,0 +1,8 @@
+{
+  "label": "System admin guide",
+  "position": 24,
+  "link": {
+    "type": "generated-index",
+    "description": "Deploy and configure your own instance of the Metadata Capture application."
+  }
+}

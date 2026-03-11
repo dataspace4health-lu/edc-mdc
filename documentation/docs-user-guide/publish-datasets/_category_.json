@@ -1,0 +1,9 @@
+{
+  "label": "Publish datasets",
+  "position": 8,
+  "description": "Make your datasets publicly discoverable to users.",
+  "link": {
+    "type": "generated-index",
+    "description": "Make your datasets publicly discoverable to users."
+  }
+}

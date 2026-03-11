@@ -1,0 +1,297 @@
+{
+  "config_version": "1.0",
+  "app_title": "Dataset Metadata Capture",
+  "feature_flags": {
+    "enable_validation_via_group_manager": true,
+    "enable_duration_of_data": true,
+    "enable_conventions": true,
+    "enable_area_of_work_and_competence": true,
+    "enable_distribution_path": true,
+    "enable_notes": false,
+    "enable_distribution_notes": false,
+    "enable_monitoring_location": true,
+    "enable_authentic_source": true,
+    "enable_multi_tenants": true,
+    "enable_dual_instance": false,
+    "enable_upload_datasets_to_front_office": true
+  },
+  "default_themes": [
+    "http://publications.europa.eu/resource/authority/data-theme/ENVI"
+  ],
+  "catalogue": {
+    "name": "Luxembourg National Data Catalogue",
+    "description": "The Luxembourg National Data Catalogue aims to provide a comprehensive overview of all data available in the public sector in Luxembourg",
+    "publisher_name": "Luxembourg National Data Service",
+    "url": "https://metadata.demo.lnds.tech",
+    "uri_templates": {
+      "datasets": "/datasets/{identifier}",
+      "data_services": "/data-services/{id}",
+      "sample_distribution_download": "/datasets/{identifier}/data-dictionaries/download"
+    }
+  },
+  "health_data_access_body": {
+    "identifier": "https://health.data.lu/hdab/luxembourg",
+    "name": "Health Data Access Body Luxembourg",
+    "contact_name": "HDAB Contact Point",
+    "contact_email": "hdab@health.lu"
+  },
+  "unauthorised_message": "Please contact your administrator to gain access to this application.",
+  "technical_support_message": "For technical support, contact us at https://service.desk.lnds.lu",
+  "conventions": [],
+  "areas_of_work": [
+    {
+      "key": "autorisations_certificats_subventions",
+      "eng_label": "Autorisations, certificats et subventions"
+    },
+    {
+      "key": "conseils_politiques_strategies_concepts",
+      "eng_label": "Conseils politiques, stratégies et concepts"
+    },
+    {
+      "key": "gouvernance_information_sensibilisation",
+      "eng_label": "Gouvernance Information et sensibilisation"
+    },
+    {
+      "key": "inspections_controles",
+      "eng_label": "Inspections et contrôles"
+    },
+    {
+      "key": "surveillance_evaluation",
+      "eng_label": "Surveillance et évaluation"
+    }
+  ],
+  "areas_of_competence": [
+    {
+      "key": "bruit",
+      "eng_label": "Bruit"
+    },
+    {
+      "key": "dechets_ressources",
+      "eng_label": "Déchets et ressources"
+    },
+    {
+      "key": "procedures_administratives",
+      "eng_label": "Procédures administratives"
+    },
+    {
+      "key": "protection_des_sols_et_gestion_des_sites_contamines",
+      "eng_label": "Protection des sols et gestion des sites contaminés"
+    },
+    {
+      "key": "qualite_air",
+      "eng_label": "Qualité de l'air"
+    }
+  ],
+  "distribution_path": [
+    {
+      "key": "external_inspire_portal",
+      "eng_label": "External Inspire Portal"
+    },
+    {
+      "key": "external_open_data",
+      "eng_label": "External Open Data"
+    },
+    {
+      "key": "external_geoportal",
+      "eng_label": "External Geoportal"
+    },
+    {
+      "key": "external_emwelt",
+      "eng_label": "External Emwelt"
+    },
+    {
+      "key": "external_official_reporting",
+      "eng_label": "External Official Reporting"
+    },
+    {
+      "key": "internal",
+      "eng_label": "Internal"
+    },
+    {
+      "key": "external_lndc",
+      "eng_label": "External LNDC"
+    }
+  ],
+  "roles_path_in_access_token": "resource_access.{client_id}.roles",
+  "disable_email_for_roles": ["LEADERSHIP_TEAM"],
+  "roles": [
+    {
+      "name": "BOT_USER",
+      "permissions": ["system:admin", "datasets:read:published"]
+    },
+    {
+      "name": "CONTRIBUTOR",
+      "permissions": [
+        "datasets:edit:draft:my",
+        "datasets:delete:draft:my",
+        "datasets:read:all-after-complete",
+        "datasets:status-change:complete:my"
+      ]
+    },
+    {
+      "name": "OBSERVER",
+      "permissions": [
+        "datasets:edit:draft:my",
+        "datasets:read:all-after-draft",
+        "datasets:status-change:complete:my"
+      ]
+    },
+    {
+      "name": "GROUP_MANAGER",
+      "permissions": [
+        "datasets:edit:draft:my",
+        "datasets:edit:draft:group",
+        "datasets:read:all-after-complete",
+        "datasets:status-change:validate:group",
+        "datasets:status-change:complete:group",
+        "datasets:status-change:draft:group"
+      ]
+    },
+    {
+      "name": "DATA_MANAGER",
+      "iam_role_name": "DATA_MANAGER",
+      "permissions": [
+        "datasets:edit:draft",
+        "datasets:delete:draft",
+        "datasets:read:all-after-draft",
+        "datasets:status-change:complete",
+        "datasets:status-change:draft",
+        "datasets:status-change:validate",
+        "datasets:status-change:approve",
+        "datasets:status-change:publish",
+        "datasets:status-change:internal-only",
+        "datasets:status-change:deprecate",
+        "form-fields:edit",
+        "organisations:edit",
+        "catalogue:generate-rdf",
+        "catalogue:upload-rdf:s3",
+        "roles:manage"
+      ]
+    },
+    {
+      "name": "LEADERSHIP_TEAM",
+      "permissions": [
+        "datasets:edit:draft:my",
+        "datasets:read:all-after-complete",
+        "datasets:status-change:approve"
+      ]
+    },
+    {
+      "name": "CATALOGUE_MANAGER",
+      "permissions": [
+        "datasets:edit:draft",
+        "datasets:delete:draft",
+        "datasets:read:all-after-draft",
+        "datasets:status-change:complete",
+        "datasets:status-change:draft",
+        "datasets:status-change:validate",
+        "datasets:status-change:approve",
+        "datasets:status-change:publish",
+        "datasets:status-change:internal-only",
+        "datasets:status-change:deprecate",
+        "form-fields:edit",
+        "organisations:edit",
+        "contacts:edit",
+        "catalogue:generate-rdf",
+        "catalogue:upload-rdf:s3",
+        "roles:manage",
+        "authentic-source:assign",
+        "comments:delete"
+      ]
+    },
+    {
+      "name": "INVENTORY_COORDINATOR",
+      "permissions": [
+        "datasets:read:all-after-draft",
+        "datasets:status-change:validate",
+        "datasets:status-change:complete",
+        "form-fields:edit:organisation",
+        "contacts:edit:organisation",
+        "organisations:edit:organisation",
+        "datasets:read:published",
+        "roles:manage:organisation"
+      ]
+    },
+    {
+      "name": "METADATA_EDITOR",
+      "permissions": [
+        "datasets:edit:draft:organisation",
+        "datasets:delete:draft:organisation",
+        "datasets:read:all-after-draft:organisation",
+        "datasets:status-change:complete:my",
+        "datasets:status-change:complete:organisation",
+        "datasets:read:published",
+        "form-fields:edit:my",
+        "contacts:edit:organisation"
+      ]
+    },
+    {
+      "name": "METADATA_REVIEWER",
+      "permissions": [
+        "datasets:read:all-after-draft:organisation",
+        "datasets:read:completed",
+        "datasets:read:validated",
+        "datasets:read:published",
+        "datasets:status-change:validate",
+        "form-fields:edit:my"
+      ]
+    },
+    {
+      "name": "METADATA_APPROVER",
+      "permissions": [
+        "datasets:read:all-after-draft:organisation",
+        "datasets:read:validated",
+        "datasets:read:approved",
+        "datasets:read:published",
+        "datasets:status-change:approve",
+        "datasets:status-change:internal-only"
+      ]
+    }
+  ],
+  "email_templates": {
+    "DATASET_COMPLETED": {
+      "subject": "Dataset Completed: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been submitted and is ready for validation.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nPlease review and validate this dataset at your earliest convenience.\n\nThank you"
+    },
+    "DATASET_VALIDATED": {
+      "subject": "Dataset Ready for Approval: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been validated and is ready for your approval.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nPlease review and approve this dataset at your earliest convenience.\n\nThank you"
+    },
+    "DATASET_APPROVED": {
+      "subject": "Dataset Approved: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been approved.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nThank you"
+    },
+    "DATASET_BACK_TO_DRAFT": {
+      "subject": "Dataset Returned to Draft: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been returned to draft status.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nPlease review and resubmit this dataset at your earliest convenience.\n\nThank you"
+    },
+    "DATASET_PUBLISHED": {
+      "subject": "Dataset Published: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been published.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nThank you"
+    },
+    "DATASET_MARKED_AS_INTERNAL": {
+      "subject": "Dataset Marked as Internal: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been marked as internal.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nThank you"
+    },
+    "DATASET_DEPRECATED": {
+      "subject": "Dataset Deprecated: $dataset_title",
+      "body": "Dear $recipient_name,\n\nA dataset has been deprecated.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nThank you"
+    },
+    "DATASET_DEPRECATED_WITH_NEW_VERSION": {
+      "subject": "Dataset Deprecated: $dataset_title",
+      "body": "Dear $recipient_name,\n\nThe dataset \"$dataset_title\" has been deprecated as a new version is now available.\n\nDeprecated Dataset: $dataset_title\nLink: $dataset_link\n\nNew Version: $newer_dataset_title\nLink: $newer_dataset_link\n\nThank you"
+    },
+    "ROLE_ASSIGNED": {
+      "subject": "Role Assignment Notification: $role_name for $target_user_name",
+      "body": "Dear $recipient_name,\n\nA role has been assigned in the system.\n\nUser: $target_user_name ($target_user_email)\nRole: $role_name\nOrganisation: $organisation_name\nAssigned by: $assigner_name\n\nYou can visit the application at: $app_url\n\nThank you"
+    },
+    "AUTHENTIC_SOURCE_ASSIGNMENT_CHANGED": {
+      "subject": "Authentic Source Assignment Changed: $dataset_title",
+      "body": "Dear $recipient_name,\n\nAuthentic source label assignments have been modified for a dataset.\n\nDataset: $dataset_title\nLink: $dataset_link\n\nChanges made:\n$changes_summary\n\nModified by: $assigner_name\n\nThank you"
+    },
+    "KEYWORD_PROMOTED_TO_GLOBAL": {
+      "subject": "Keyword Promoted to Global: $keyword_name",
+      "body": "Dear $recipient_name,\n\nThe keyword \"$keyword_name\" from your organisation has been promoted to global status by $promoter_name.\n\nThank you"
+    }
+  }
+}

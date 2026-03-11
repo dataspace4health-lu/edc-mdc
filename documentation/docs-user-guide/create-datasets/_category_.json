@@ -1,0 +1,9 @@
+{
+  "label": "Create datasets",
+  "position": 5,
+  "description": "Create datasets individually or in bulk, duplicate existing ones, and track versions over time.",
+  "link": {
+    "type": "generated-index",
+    "description": "Create datasets individually or in bulk, duplicate existing ones, and track versions over time."
+  }
+}

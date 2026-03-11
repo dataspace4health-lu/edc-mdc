@@ -1,0 +1,9 @@
+{
+  "label": "Manage published datasets",
+  "position": 9,
+  "description": "Ensure your published datasets remain accurate and up-to-date",
+  "link": {
+    "type": "generated-index",
+    "description": "Ensure your published datasets remain accurate and up-to-date"
+  }
+}

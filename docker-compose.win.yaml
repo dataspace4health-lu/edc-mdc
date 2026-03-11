@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_URL=postgresql://user:password@database:5432/db
+      - APP_URL=http://localhost:8000
+      - ENVIRONMENT=end2end
+      - OPENID_CLIENT_ID=dca-metadata-capture-local
+      - OPENID_CLIENT_SECRET=ypctz2GbUYM4qNMg48BRGNfVzgFTINzJ
+      - OPENID_AUTH_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/auth
+      - OPENID_TOKEN_URL=http://keycloak:8080/realms/dca-metadata-capture-local/protocol/openid-connect/token
+      - OPENID_JWKS_URL=http://keycloak:8080/realms/dca-metadata-capture-local/protocol/openid-connect/certs
+      - OPENID_END_SESSION_URL=http://localhost:8080/realms/dca-metadata-capture-local/protocol/openid-connect/logout
+      - SESSION_SECRET_KEY=secret
+      - SESSION_ENCRYPTION_KEY=encryption_key
+      - CONFIG_PATH=/config/config.json
+      - OTL_URL
+      - OTL_TOKEN
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - "./app/.env.e2e:/code/.env"
+      - "./e2e/config.e2e.json:/config/config.json"
+  database:
+    image: docker.io/postgres:18.2-alpine
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d db"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    command:
+      - "start-dev"
+      - "--import-realm"
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./e2e/keycloak-config:/opt/keycloak/data/import/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+volumes:
+  db:
+    driver: local

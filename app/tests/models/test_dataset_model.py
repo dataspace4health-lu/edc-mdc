@@ -1,0 +1,68 @@
+import pytest
+from models.dataset import DatasetStatus
+from sqlalchemy.orm import Session
+from test_factory import sample_dataset
+
+
+def test_to_dict_for_diff(sample_dataset):
+    dataset_dict = sample_dataset.to_dict_for_diff()
+    expected_dict = {
+        "status": DatasetStatus.DRAFT.value,
+        "title": "Sample Dataset",
+        "description": "Sample dataset description",
+        "contact_ids": [dc.contact_id for dc in sample_dataset.contacts],
+        "publisher_id": sample_dataset.publisher_id,
+        "time_period_start": "2024-03-01",
+        "time_period_end": "2025-02-28",
+        "retention_period_start": None,
+        "retention_period_end": None,
+        "dataset_types": ["REPORTING"],
+        "rights_statement": "PUBLIC",
+        "periodicity": "ANNUALLY",
+        # "status": "Internal only",
+        "themes": ["ENV"],
+        "keywords": ["security"],
+        "health_categories": ["EHRS"],
+        "health_themes": ["CLIMATE_HEALTH"],
+        "spatial_coverages": ["LUX"],
+        "conventions": ["banana"],
+        "areas_of_work": ["monitoring"],
+        "areas_of_competence": ["bruit"],
+        "applicable_legislations": ["GDPR"],
+        "notes": "",
+        "duration_of_administrative_utility": 0,
+        "max_typical_age": 0,
+        "min_typical_age": 0,
+        "number_of_records": 0,
+        "number_of_unique_individuals": 0,
+        "final_disposition": "Archive",
+        "modified_at": "2022-12-31",
+        "deprecated_at": "2022-12-31T00:00:00",
+        "release_date": "2022-12-31",
+        "released_at": None,
+        "version": "0.0.0",
+        "creator_ids": [creator.organisation_id for creator in sample_dataset.creators],
+        "group_managers": [gm.user_id for gm in sample_dataset.group_managers],
+        "data_protection_types": ["commercial_confidentiality"],
+        "monitoring_location": "Luxembourg",
+        "provenance": ["Official records"],
+        "health_legal_basis": [],
+        "population_coverage": "Adults aged 18-65 in Luxembourg",
+        "code_values": ["ICD-10 Codes"],
+        "coding_systems": ["https://www.wikidata.org/entity/Q9006342"],
+        "languages": ["SAN"],
+        "landing_pages": ["https://example.com/landing_page"],
+        "is_dataset_series": False,
+        "member_datasets": [],
+        "documentation": ["https://example.com/dataset_document"],
+        "purpose": ["Research and public health monitoring"],
+        "conforms_to": ["https://example.com/conforms_to"],
+        "was_generated_by": ["id-1"],
+        "other_identifiers": ["id-1"],
+        "version_notes": ["note-1"],
+        "spatial_resolutions": [1],
+        "temporal_resolution": "P10D",
+        "personal_data": ["Age"],
+    }
+
+    assert dataset_dict == expected_dict, "Main dictionary items do not match."
