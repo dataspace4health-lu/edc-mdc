@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface BreadcrumbProps {
   firstLevel: string;
   firstLevelLink: string;
@@ -10,12 +12,12 @@ const Breadcrumb = ({ firstLevel, firstLevelLink, location }: BreadcrumbProps) =
       <nav className='text-lnds-gray'>
         <ol className='flex space-x-1'>
           <li className='flex items-center'>
-            <a
-              href={firstLevelLink}
+            <Link
+              to={firstLevelLink}
               className='hover:text-lnds-dark-blue dark:hover:text-white hover:underline'
             >
               {firstLevel}
-            </a>
+            </Link>
             <span className='mx-2'>/</span>
           </li>
 
