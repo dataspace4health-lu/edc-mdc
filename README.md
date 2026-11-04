@@ -29,3 +29,12 @@ To contribute to the documentation, see the documentation readme: [documentation
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Upstream project
+
+This repository is based on the LNDS DCA Metadata Capture project:
+
+https://gitlab.com/lnds-lu/service-library/dca-metadata-capture
+
+Dataspace4Health maintains limited integration-specific modifications for running MDC
+under the `/mdc` application path. See [NOTICE.md](NOTICE.md) for details.
