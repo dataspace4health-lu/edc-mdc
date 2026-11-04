@@ -17,3 +17,23 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+## Dataspace4Health modifications
+
+This repository is based on the LNDS DCA Metadata Capture project:
+
+https://gitlab.com/lnds-lu/service-library/dca-metadata-capture
+
+The identified Dataspace4Health-specific changes include:
+
+- Added `VITE_BASE_URL=/mdc` in `.env.production`.
+- Replaced HTML `<a>` navigation with React `<Link>` navigation in:
+  - `ctie_only_access/index.tsx`
+  - `first_time_login/index.tsx`
+  - `unauthorized/index.tsx`
+  - `DataDictionaryTable.tsx`
+  - `Breadcrumb.tsx`
+  - `LeftSidebarWithLinks.tsx`
+
+These changes address frontend routing when the application is served under
+the `/mdc` base path.
